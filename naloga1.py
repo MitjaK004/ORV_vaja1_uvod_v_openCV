@@ -22,7 +22,7 @@ def obdelaj_sliko_s_skatlami(slika, sirina_skatle, visina_skatle, barva_koze) ->
         for i in range(0, stev_stolpcev):
             rez[j][i] = prestej_piklse_z_barvo_koze(izrezi_del_slike(slika, i*sirina_skatle, j*visina_skatle, sirina_skatle, visina_skatle), barva_koze)
 
-            if rez[j][i] > 48:
+            if rez[j][i] > int((stev_vrstic * stev_stolpcev) * 0.72):
                 row = j * visina_skatle
                 col = i * sirina_skatle
 
@@ -83,8 +83,8 @@ if __name__ == '__main__':
     kamera = cv.VideoCapture(0)
     ret, slika = kamera.read()
 
-    visina_skatle = slika.shape[0] // 64
-    sirina_skatle = slika.shape[1] // 64
+    visina_skatle = slika.shape[0] // 16
+    sirina_skatle = slika.shape[1] // 16
 
     #barva1 = (186, 204, 246)
     #barva2 = (81, 81, 214)
