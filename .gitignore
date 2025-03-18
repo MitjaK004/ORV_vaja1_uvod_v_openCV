@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+virtualno_okolje/
+.tests/
+primeri/
+
