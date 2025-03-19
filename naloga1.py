@@ -61,7 +61,7 @@ def doloci_barvo_koze(slika,levo_zgoraj,desno_spodaj) -> tuple:
 
     modus1 = enolicne_barve[np.argmax(kolicine)]
 
-    toleranca = 0.4 * std_odkl
+    toleranca = 0.1 * std_odkl
 
     barva_nizka = np.array([np.clip(povp_barva[0] - toleranca[0]), np.clip(povp_barva[1] - toleranca[1]), np.clip(povp_barva[2] - toleranca[2])],
                           dtype=np.uint8)
@@ -106,8 +106,8 @@ if __name__ == '__main__':
     kamera = cv.VideoCapture(0)
     ret, slika = kamera.read()
 
-    visina_skatle = slika.shape[0] // 16
-    sirina_skatle = slika.shape[1] // 16
+    visina_skatle = slika.shape[0] // 8
+    sirina_skatle = slika.shape[1] // 8
 
     #barva1 = (186, 204, 246)
     #barva2 = (81, 81, 214)
