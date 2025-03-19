@@ -7,6 +7,9 @@ slika = None
 tocki = []
 rezem = False
 
+def zmanjsaj_sliko(slika, sirina, visina):
+    return cv.resize(slika, (sirina, visina))
+
 def izrezi_del_slike(slika, x, y, sirina, visina):
     return slika[y:y+visina, x:x+sirina]
 
@@ -48,12 +51,13 @@ def doloci_barvo_koze(slika,levo_zgoraj,desno_spodaj) -> tuple:
             print(j, end="")
 
     povp_barva = np.mean(obmocje, axis=(0, 1))
+    mediana_barva = np.median(obmocje, axis=(0, 1))
     std_odkl = np.std(obmocje, axis=(0, 1))
     modus = stats.mode(obmocje, axis=0).mode
 
     print("")
     print("povp_barva: ", povp_barva, ", std_odkl: ", std_odkl)
-    print("modus: ", modus[0])
+    print("modus: ", modus[0], ", mediana: ", mediana_barva)
 
     bgr_tupli = [tuple(barva) for barva in obmocje]
 
@@ -92,6 +96,7 @@ def sledi_obrazu_v_realnem_casu(barva_koze, kamera, sirina_skatle, visina_skatle
         if not ret:
             break
 
+        zmanjsaj_sliko(slika, 320, 240)
         obdelaj_sliko_s_skatlami(slika, sirina_skatle, visina_skatle, barva_koze)
 
         cv.imshow("Slika", slika)
@@ -105,9 +110,10 @@ def sledi_obrazu_v_realnem_casu(barva_koze, kamera, sirina_skatle, visina_skatle
 if __name__ == '__main__':
     kamera = cv.VideoCapture(0)
     ret, slika = kamera.read()
+    zmanjsaj_sliko(slika, 320, 240)
 
-    visina_skatle = slika.shape[0] // 8
-    sirina_skatle = slika.shape[1] // 8
+    visina_skatle = slika.shape[0] // 10
+    sirina_skatle = slika.shape[1] // 10
 
     #barva1 = (186, 204, 246)
     #barva2 = (81, 81, 214)
