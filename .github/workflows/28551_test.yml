@@ -2,9 +2,9 @@ name: Testiranje detekcije obraza
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   preveri_teste:
