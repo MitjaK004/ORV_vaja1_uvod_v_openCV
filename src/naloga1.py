@@ -7,6 +7,7 @@ slika = None
 tocki = []
 rezem = False
 
+#vaja1
 def zmanjsaj_sliko(slika, sirina, visina):
     return cv.resize(slika, (sirina, visina))
 
