@@ -17,6 +17,14 @@ env/
 # IDE
 .vscode/
 .idea/
+=======
+src/.venv/
+src/venv/
+src/env/
+
+# IDE
+src/.vscode/
+src/.idea/
 
 # Logs
 *.log
@@ -34,3 +42,4 @@ virtualno_okolje/
 .tests/
 primeri/
 
+actions-runner/

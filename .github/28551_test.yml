@@ -1,0 +1,79 @@
+name: Testiranje detekcije obraza
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  preveri_teste:
+    name: Preveri prisotnost testov
+    runs-on: self-hosted
+    outputs:
+      tests_exist: ${{ steps.check_tests.outputs.exist }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Preveri testne datoteke
+        id: check_tests
+        run: |
+          if [ -f "tests/test_face_detection.py" ] && [ -f "tests/test_ci.py" ]; then
+            echo "Testne datoteke obstajajo"
+            echo "exist=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Manjkajoče testne datoteke"
+            echo "exist=false" >> $GITHUB_OUTPUT
+            echo "Napaka: Manjkajoče testne datoteke" > napaka.txt
+          fi
+          
+      - name: Shrani artefakte
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-artifacts
+          path: |
+            napaka.txt
+            tests/
+
+  izvedi_teste:
+    name: Izvedi teste
+    needs: preveri_teste
+    if: needs.preveri_teste.outputs.tests_exist == 'true'
+    runs-on: self-hosted
+    
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+        os: [ubuntu-20.04]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Preberi artefakte
+        uses: actions/download-artifact@v3
+        with:
+          name: test-artifacts
+          
+      - name: Preveri napake
+        run: |
+          if [ -f "napaka.txt" ]; then
+            echo "Vsebina datoteke napaka.txt:"
+            cat napaka.txt
+            exit 1
+          fi
+      
+      - name: Nastavi Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          
+      - name: Namesti odvisnosti
+        run: |
+          python -m pip install --upgrade pip
+          pip install opencv-python numpy scipy pytest
+          pip install -e .
+          
+      - name: Poženi teste
+        run: |
+          pytest tests/ -v
